@@ -9,3 +9,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install Docker CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install docker-ce
+      - name: Build Docker image
+        run: docker build -t snehalvelankar/cicd:tagname.
+      - name: Login to Docker registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin https://hub.docker.com/repository/docker/snehalvelankar/cicd/general
+      - name: Push Docker image
+        run: docker push https://hub.docker.com/repository/docker/snehalvelankar/cicd/general/snehalvelankar/cicd:tagname:latest
+
