@@ -18,7 +18,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-ce
       - name: Build Docker image
-        run: docker build -t snehalvelankar/cicd:tagname.
+        run: docker buildx build -t https://hub.docker.com/repository/docker/snehalvelankar/cicd/general.
       - name: Login to Docker registry
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin https://hub.docker.com/repository/docker/snehalvelankar/cicd/general
       - name: Push Docker image
